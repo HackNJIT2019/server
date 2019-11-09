@@ -69,4 +69,44 @@ router.post('/signup', (req, res, next) => {
   });
 });
 
+router.post('/login', (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  usermodel.findOne({email: email}, (err, user) => {
+    if (err) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      return res.json({success: false, msg: err});
+    }
+    if (!user) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        return res.json({success: false, msg: 'User not found'});
+    }
+    if ( user ) {
+      if ( password == user.password ) {
+        const uSer = JSON.stringify(user);
+        console.log('jsonuser', uSer);
+        const token = authenticate.getToken({_id: user._id});
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.json({
+          success: true,
+          token: token,
+          user: {
+            _id: user._id,
+            email: user.email,
+            contactno: user.contactno
+          }
+        });
+      } else {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.json({success: false, msg: 'Wrong password!'});
+      }
+    }
+  })
+});
+
 module.exports = router;
