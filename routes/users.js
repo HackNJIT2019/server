@@ -25,7 +25,8 @@ router.post('/signup', (req, res, next) => {
     password: req.body.password,
     contactno: req.body.contactno,
     address: req.body.address,
-    cash: req.body.cash
+    cash: req.body.cash,
+    name: req.body.name
   });
 
   usermodel.findOne({email: req.body.email}, (err, user) => {
@@ -97,7 +98,8 @@ router.post('/login', (req, res, next) => {
           user: {
             _id: user._id,
             email: user.email,
-            contactno: user.contactno
+            contactno: user.contactno,
+            name: user.name
           }
         });
       } else {
