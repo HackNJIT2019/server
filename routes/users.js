@@ -54,7 +54,18 @@ router.post('/signup', (req, res, next) => {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             res.setHeader('Content-Type', 'application/json');
-            res.json({success: true, status: 'Registration Successful!'});
+            const token = authenticate.getToken({_id: user._id});
+            res.json({
+              success: true,
+              status: 'Registration Successful!',
+              token: token,
+              user: {
+                _id: user._id,
+                email: user.email,
+                contactno: user.contactno,
+                name: user.name
+              }
+            });
             console.log("user: ", user);
         }
       });
