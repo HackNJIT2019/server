@@ -19,4 +19,8 @@ router.route('/')
 router.route('/:restId')
 .get(restaurantController.getSingleRestaurent);
 
+// search
+router.route('/search')
+.post(restaurantController.search);
+
 module.exports = router;
